@@ -64,11 +64,15 @@ int main()
 
         if (sscanf(line, "%127[^:]:%127s", username, password) == 2) 
         {
-            fprintf(output_file, "Username: %s, Password: %s\n", username, password);
             printf("\nUsername: %s, Password: %s\n", username, password);
 
             int strength = evaluate_password_strength(password);
             printf("  Password Strength: %d/5\n", strength);
+
+            if(strength!=5)
+            {
+                fprintf(output_file, "Username: %s, Password: %s\n", username, password);
+            }
 
             printf("  Potential Vulnerabilities:\n");
             identify_vulnerabilities(password);
