@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 class Library {
     private java.util.ArrayList<String> books = new java.util.ArrayList<>();
     static int totalBooks = 0;
@@ -64,21 +66,67 @@ class Library {
 public class Library_Management {
     public static void main(String[] args) {
         Library myLibrary = new Library();
+        Scanner scanner = new Scanner(System.in);
 
-        myLibrary.addBook("The Great Gatsby");
-        myLibrary.addBook(new String[]{"1984", "To Kill a Mockingbird", "Harry Potter"});
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\nLibrary Management System");
+            System.out.println("1. Add a Book");
+            System.out.println("2. Add Multiple Books");
+            System.out.println("3. Remove a Book");
+            System.out.println("4. Search for a Book");
+            System.out.println("5. Display All Books");
+            System.out.println("6. Create and Display Book Details");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
 
-        myLibrary.displayBooks();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        myLibrary.removeBook("1984");
-        myLibrary.displayBooks();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the title of the book to add: ");
+                    String title = scanner.nextLine();
+                    myLibrary.addBook(title);
+                    break;
+                case 2:
+                    System.out.print("Enter the titles of the books to add (comma-separated): ");
+                    String[] titles = scanner.nextLine().split(",");
+                    myLibrary.addBook(titles);
+                    break;
+                case 3:
+                    System.out.print("Enter the title of the book to remove: ");
+                    String removeTitle = scanner.nextLine();
+                    myLibrary.removeBook(removeTitle);
+                    break;
+                case 4:
+                    System.out.print("Enter the title of the book to search for: ");
+                    String searchTitle = scanner.nextLine();
+                    boolean found = myLibrary.searchBook(searchTitle);
+                    System.out.println("Book found: " + found);
+                    break;
+                case 5:
+                    myLibrary.displayBooks();
+                    break;
+                case 6:
+                    System.out.print("Enter the title of the book: ");
+                    String bookTitle = scanner.nextLine();
+                    System.out.print("Enter the author of the book: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Enter the publication year of the book: ");
+                    int year = scanner.nextInt();
+                    Library.Book book = myLibrary.new Book(bookTitle, author, year);
+                    book.displayDetails();
+                    break;
+                case 7:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
 
-        System.out.println("Searching for 'Harry Potter': " + myLibrary.searchBook("Harry Potter"));
-        System.out.println("Searching for 'The Catcher in the Rye': " + myLibrary.searchBook("The Catcher in the Rye"));
-
-        Library.Book book1 = myLibrary.new Book("Pride and Prejudice", "Jane Austen", 1813);
-        book1.displayDetails();
-
-        System.out.println("Total books in library: " + Library.totalBooks);
+        scanner.close();
+        System.out.println("Library management system exited.");
     }
 }
